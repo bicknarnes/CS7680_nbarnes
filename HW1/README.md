@@ -1,1 +1,4 @@
-Directory for HW1
+# Homework 01
+### Designing an Architecture 
+
+(Elevator Model)
