@@ -1,3 +1,3 @@
-# S7680 Homework 03 
+# Homework 03 
 
 ### Traffic Lights
