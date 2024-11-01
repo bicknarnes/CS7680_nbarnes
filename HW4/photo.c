@@ -20,7 +20,8 @@ int RCtime(int RCpin) {
 
     gpioSetMode(RCpin, PI_OUTPUT);
     gpioWrite(RCpin, 0);
-    gpioDelay(100000); // 100 milliseconds
+    // Delay 100 milliseconds:
+    gpioDelay(100000);
 
     gpioSetMode(RCpin, PI_INPUT);
     // This loop takes about 1 microsecond per cycle
@@ -108,9 +109,11 @@ int main(void) {
         // Delay 100 milliseconds:
         usleep(100000);
     }
+    // Put pins safely back into input state:
     gpioSetMode(OUT_LOW, PI_INPUT);
     gpioSetMode(OUT_HIGH, PI_INPUT);
     gpioSetMode(OUT_STATE, PI_INPUT);
+    // Terminate GPIO interface:
     gpioTerminate();
     printf("\n");
     return 0;
