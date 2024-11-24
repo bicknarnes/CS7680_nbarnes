@@ -4,8 +4,8 @@
 #include <signal.h>
 #include <unistd.h>
 /*
-        gcc -pthread -o dial dial.c -lpigpio -lrt
-        dial [num_of_loops] [speed_of_transmission]
+        gcc -pthread -o a2d a2d.c -lpigpio -lrt
+        a2d [num_of_loops] [speed_of_transmission]
                 defaults to 1000000 in both cases
 */
 
