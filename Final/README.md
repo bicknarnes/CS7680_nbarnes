@@ -1,8 +1,8 @@
+# Pi Piano
+
 Nick Barnes
 
-CS 7680: Programming Embedded Systems -- Final Project
-
-### Pi Piano
+### CS 7680: Programming Embedded Systems -- Final Project
 
 piano.c contains all the code required to run the project.
 
