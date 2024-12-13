@@ -2,6 +2,8 @@
 
 Nick Barnes
 
+December 13th 2024
+
 ### CS 7680: Programming Embedded Systems -- Final Project
 
 piano.c contains all the code required to run the project.
