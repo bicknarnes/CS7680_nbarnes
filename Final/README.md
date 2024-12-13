@@ -6,7 +6,7 @@ CS 7680: Programming Embedded Systems
 
 piano.c contains all code to run the project.
 
-it relies on pigpio, alsa sound (asound), and math libraries that must be included in compilation.
+it relies on pigpio, ALSA (asound), and math libraries that must be included in compilation.
 
 To compile:
 
