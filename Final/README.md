@@ -4,9 +4,9 @@ CS 7680: Programming Embedded Systems -- Final Project
 
 ### Pi Piano
 
-piano.c contains all code to run the project.
+piano.c contains all the code required to run the project.
 
-it relies on pigpio, ALSA (asound), and math libraries that must be included in compilation.
+it relies on the PIGPIO, ALSA (asound), and Math libraries that must be included in compilation.
 
 To compile:
 
