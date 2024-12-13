@@ -83,7 +83,6 @@ double potHandler(int potNum) {
 // Function to check whether an octave change has been requested
 // returns 0 if not, 1 if octave down, 2 if octave up
 int checkOctaveChange() {
-	//printf("YOU HAVE NOW ENTERED checkOctaveChange\n");
 	// if bottom three keys are pressed, indicate to decrease octave
 	if(gpioRead(keyPins[0])==0 && gpioRead(keyPins[1])==0 && gpioRead(keyPins[2])==0) {
 		return 1;
@@ -97,7 +96,6 @@ int checkOctaveChange() {
 
 // Function to return the new octave when an octave change is requested:
 int changeOctave(int currentOctave) {
-	//printf("YOU HAVE NOW ENTERED changeOctave\n");
 	// if down octave requested, try to decrease octave
 	if(checkOctaveChange()==1 && currentOctave>0) {
 		sleep(1);
@@ -174,7 +172,6 @@ void playTones(snd_pcm_t *pcm_handle, int frames, int channels, int octave, int 
 	    static double tremPhase = 0.0;
       	    for (int j = 0; j < frames; j++) {
 	            buffer[j] = 0.0; // Reset buffer for this frame
-		    //printf("J: %d\n", j);
 	            for (int i = 0; i < NUM_BUTTONS; i++) {
 	                if (gpioRead(keyPins[i]) == 0) { // Button is pressed
 	
