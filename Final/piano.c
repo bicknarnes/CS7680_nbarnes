@@ -9,19 +9,19 @@
 // Hardware / wave generation specs:
 #define SAMPLE_RATE 44100       // Sampling rate in Hz
 #define NUM_BUTTONS 13          // Number of buttons
-#define SPEED 1000000		        // define speed for SPI transfer
+#define SPEED 1000000		// define speed for SPI transfer
 
 // GPIO / channel number constants:
 #define VOLUME 0.5              // Volume (0.0 to 1.0)
-#define VOL_POT 0		            // channel number for volume potentiometer
-#define TREM 4			            // GPIO pin for tremolo button
-#define TREM_POT 1		          // channel number for tremolo potentiometer
-#define TREM_LIGHT 18		        // GPIO pin for tremolo on/off light
-#define POWER 27		            // GPIO pin for power button
-#define PITCH_BEND 17		        // GPIO pin for pitch bend button
-#define PITCH_POT 2		          // channel number for tone potentiometer
-#define PITCH_LIGHT 14		      // GPIO pin for pitch on/off light
-#define PITCH 0.5		            // default value for pitch bending
+#define VOL_POT 0		// channel number for volume potentiometer
+#define TREM 4			// GPIO pin for tremolo button
+#define TREM_POT 1		// channel number for tremolo potentiometer
+#define TREM_LIGHT 18		// GPIO pin for tremolo on/off light
+#define POWER 27		// GPIO pin for power button
+#define PITCH_BEND 17		// GPIO pin for pitch bend button
+#define PITCH_POT 2		// channel number for tone potentiometer
+#define PITCH_LIGHT 14		// GPIO pin for pitch on/off light
+#define PITCH 0.5		// default value for pitch bending
 
 // define 2D array of octaves & their respective keys' frequencies:
 const double freqs[5][13] = {
@@ -143,7 +143,7 @@ void playTones(snd_pcm_t *pcm_handle, int frames, int channels, int octave, int 
 
     while (!signal_received) {	
 	    // initialize variable to check whether button(s) are pressed
-      int any_button_pressed = 0;
+      	    int any_button_pressed = 0;
       
 	    // check for octave change, pitch, flange requests:
 	    currentOctave = changeOctave(currentOctave);
@@ -172,57 +172,57 @@ void playTones(snd_pcm_t *pcm_handle, int frames, int channels, int octave, int 
 		    tremIncrement = 2 * M_PI * tremFactor / SAMPLE_RATE;
 	    }
 	    static double tremPhase = 0.0;
-      for (int j = 0; j < frames; j++) {
-          buffer[j] = 0.0; // Reset buffer for this frame
-	        //printf("J: %d\n", j);
-          for (int i = 0; i < NUM_BUTTONS; i++) {
-              if (gpioRead(keyPins[i]) == 0) { // Button is pressed
-
-		              // if tremolo is on, calculate value at each index:
-		              if(tremOn) {
-			                tremolo = 0.5 * (1 + sin(tremPhase));
-		              } else tremolo = 1.0;
+      	    for (int j = 0; j < frames; j++) {
+	            buffer[j] = 0.0; // Reset buffer for this frame
+		    //printf("J: %d\n", j);
+	            for (int i = 0; i < NUM_BUTTONS; i++) {
+	                if (gpioRead(keyPins[i]) == 0) { // Button is pressed
+	
+			        // if tremolo is on, calculate value at each index:
+			        if(tremOn) {
+				        tremolo = 0.5 * (1 + sin(tremPhase));
+			        } else tremolo = 1.0;
+			    
+	 	   	        frequency = freqs[currentOctave][i];
+			        phase_increments[i] = 2.0 * M_PI * (frequency*2.0*pitchFactor) / SAMPLE_RATE;
+	                  	any_button_pressed = 1;
+	                  	buffer[j] += volume * tremolo * sin(phases[i]);
+	                 	phases[i] += phase_increments[i];
+	                  	if (phases[i] >= 2.0 * M_PI) phases[i] -= 2.0 * M_PI;
+			        if(tremOn) {
+			    	        tremPhase += tremIncrement;
+			    	        if(tremPhase >= 2.0*M_PI) tremPhase -= 2.0*M_PI;
+			        }
+	                }
+	            }
 		    
- 	   	            frequency = freqs[currentOctave][i];
-		              phase_increments[i] = 2.0 * M_PI * (frequency*2.0*pitchFactor) / SAMPLE_RATE;
-                  any_button_pressed = 1;
-                  buffer[j] += volume * tremolo * sin(phases[i]);
-                  phases[i] += phase_increments[i];
-                  if (phases[i] >= 2.0 * M_PI) phases[i] -= 2.0 * M_PI;
-		              if(tremOn) {
-		    	            tremPhase += tremIncrement;
-		    	            if(tremPhase >= 2.0*M_PI) tremPhase -= 2.0*M_PI;
-		              }
-              }
-          }
-	    
-          // Prevent clipping by normalizing if the sum exceeds ±1.0 (norm)
-          if (buffer[j] > norm) {
-              buffer[j] = norm;
-          } else if (buffer[j] < -norm) {
-              buffer[j] = -norm;
-          }
-        
-	        // LOW PASS FILTER
-	        float alpha = 0.2; // filter coefficient
-	        buffer[j] = alpha * buffer[j] + (1.0 - alpha) * prevValue;
-	        prevValue = buffer[j];
-      }
+	            // Prevent clipping by normalizing if the sum exceeds ±1.0 (norm)
+	            if (buffer[j] > norm) {
+	        	buffer[j] = norm;
+	            } else if (buffer[j] < -norm) {
+	                buffer[j] = -norm;
+	            }
+	        
+		    // LOW PASS FILTER
+		    float alpha = 0.2; // filter coefficient
+		    buffer[j] = alpha * buffer[j] + (1.0 - alpha) * prevValue;
+		    prevValue = buffer[j];
+	    }
 
 	    // if no button is pressed, check for power off request and/or wait
-      if (!any_button_pressed) {
+            if (!any_button_pressed) {
 	        if(gpioRead(POWER)==0) break;
-          gpioDelay(10000); // No button pressed, polling delay
-          continue;
-      }
+                gpioDelay(10000); // No button pressed, polling delay
+                continue;
+            }
 
-      // Write the buffer to the PCM device
-      int pcm = snd_pcm_writei(pcm_handle, buffer, frames);
-      if (pcm == -EPIPE) {
-          snd_pcm_prepare(pcm_handle);
-      } else if (pcm < 0) {
-          fprintf(stderr, "ERROR: Cannot write to PCM device (%s)\n", snd_strerror(pcm));
-      }
+      	    // Write the buffer to the PCM device
+      	    int pcm = snd_pcm_writei(pcm_handle, buffer, frames);
+      	    if (pcm == -EPIPE) {
+          	snd_pcm_prepare(pcm_handle);
+      	    } else if (pcm < 0) {
+          	fprintf(stderr, "ERROR: Cannot write to PCM device (%s)\n", snd_strerror(pcm));
+            }
 	    // if power button is pressed, exit this function to safely terminate the program:
 	    if(gpioRead(POWER)==0) break;
     }  
