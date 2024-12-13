@@ -11,7 +11,7 @@ it relies on pigpio, ALSA (asound), and math libraries that must be included in 
 To compile:
 
 ```
-gcc -o piano piano.c -lpigpio -lm -lasound
+gcc -o piano piano.c -lpigpio -lasound -lm
 ```
 
 To run:
