@@ -22,4 +22,4 @@ To run:
 sudo ./piano
 ```
 
-Link to my project presentation (which includes, on the second to last slide, a video of the final version of the project in use): https://docs.google.com/presentation/d/1JN2mxNlF7kI8QqysceLYP0Ka2IR0cKqSRPW44i-4UH4/edit?usp=sharing
+Link to my project presentation (which includes, on the second to last slide, a video of the functionality of the final version of the project): https://docs.google.com/presentation/d/1JN2mxNlF7kI8QqysceLYP0Ka2IR0cKqSRPW44i-4UH4/edit?usp=sharing
