@@ -21,3 +21,5 @@ To run:
 ```
 sudo ./piano
 ```
+
+Link to my project presentation: https://docs.google.com/presentation/d/1JN2mxNlF7kI8QqysceLYP0Ka2IR0cKqSRPW44i-4UH4/edit?usp=sharing
